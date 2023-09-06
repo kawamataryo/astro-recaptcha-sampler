@@ -1,0 +1,71 @@
+---
+type Props = {
+  siteKey: string;
+};
+const { siteKey } = Astro.props;
+---
+
+<form class="card p-5 space-y-4 bg-neutral text-neutral-content m-auto w-full" id="astro-form">
+  <p class="text-2xl font-bold text-red-400">Form by Astro</p>
+  <input
+    type="text"
+    name="name"
+    data-testid="name-input"
+    class="input input-bordered"
+    placeholder="Your name"
+    required
+  />
+  <input
+    type="text"
+    name="content"
+    data-testid="content-input"
+    class="input input-bordered"
+    placeholder="Content"
+    required
+  />
+  <button type="submit" data-testid="submit-button" class="btn btn-primary">
+    Submit
+  </button>
+</form>
+
+<script define:vars={{siteKey}}>
+
+const submitForm = (e) => {
+  e.preventDefault();
+
+  grecaptcha.ready(function () {
+    grecaptcha.execute(siteKey, { action: "submit" }).then(async (token) => {
+      const response = await fetch("/api/recaptcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token,
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+
+        document.getElementById("result")?.remove();
+        e.target.insertAdjacentHTML(
+          "beforeend",
+          `<div class="py-3 text-center rounded bg-success text-gray-800" id="result">
+            <span>
+              Your score is
+              <span class="text-xl font-bold">
+                ${data.score}
+              </span>
+              . You are probably
+              ${data.score >= 0.5 ? "Human 😃 ️" : "Bot 🤖"}
+            </span>
+          </div>`
+        );
+      }
+    });
+  });
+};
+
+const form = document.getElementById("astro-form");
+form.addEventListener("submit", submitForm);
+</script>
