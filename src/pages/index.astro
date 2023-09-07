@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ContactFormByReact from "../components/ContactForm.tsx"
-import ContactFormByAstro from "../components/ContactForm.astro"
+import ContactFormByReact from "../components/ContactForm.tsx";
+import ContactFormByAstro from "../components/ContactForm.astro";
 const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
@@ -10,9 +10,11 @@ const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
     type="text/javascript"
     src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
   ></script>
-	<h1 class="text-4xl mb-10 font-extrabold text-center">Astro reCaptcha sampler</h1>
+  <h1 class="text-4xl mb-10 font-extrabold text-center">
+    Astro reCaptcha sampler
+  </h1>
   <div class="flex flex-col md:flex-row gap-10 items-top">
-    <ContactFormByAstro siteKey={RECAPTCHA_SITE_KEY}/>
-    <ContactFormByReact client:load siteKey={RECAPTCHA_SITE_KEY}/>
+    <ContactFormByAstro siteKey={RECAPTCHA_SITE_KEY} />
+    <ContactFormByReact client:load siteKey={RECAPTCHA_SITE_KEY} />
   </div>
 </Layout>
